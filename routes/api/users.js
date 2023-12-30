@@ -16,7 +16,7 @@ const User = require('../../models/User');
 // @route   GET api/users/test
 // @desc    Tests users route
 // @access  Public
-router.get('/test', (req, res) => res.json({ msg: 'Users Works' }));
+router.get('/test/count=1', (req, res) => res.json({ msg: 'Users Works' }));
 
 // @route   POST api/users/register
 // @desc    Register user
@@ -30,10 +30,10 @@ router.post('/register', (req, res) => {
   }
 
   User.findOne({ email: req.body.email }).then(user => {
-    if (user) {
-      errors.email = 'Email already exists';
-      return res.status(400).json(errors);
-    } else {
+      if (user) {
+        errors.email = 'Email already exists';
+        return res.status(400).json(errors);
+      } else {
       const avatar = gravatar.url(req.body.email, {
         s: '200', // Size
         r: 'pg', // Rating
@@ -84,7 +84,7 @@ router.post('/login', (req, res) => {
     }
 
     // Check Password
-    bcrypt.compare(password, user.password).then(isMatch => {
+  bcrypt.compare(password, user.password).then(isMatch => {
       if (isMatch) {
         // User Matched
         const payload = { id: user.id, name: user.name, avatar: user.avatar }; // Create JWT Payload
